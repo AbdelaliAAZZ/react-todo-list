@@ -10,6 +10,7 @@ const [todos, setTodos] = useState([
 ]);
 
 const [newTask,setNewTask] = useState('');
+const [sortedBy , setSortedBy] = useState('input')
 
 function handleAddTask(e){
   e.preventDefault();
@@ -48,19 +49,35 @@ function handleDeleleTask(id){
 function handleUpdate(id,newitem) {
  
   todos.map((todo) =>  todo.id === id 
-  ? setNewTask((i) => i = newitem)
+  ?  {...todo,task : newitem}
   : todo
 )
-  
 }
 
-    
+let sortedTodos;
+
+if(sortedBy === "input")
+  sortedTodos = todos;
+if(sortedBy === "checked")
+  sortedTodos = todos.slice()
+  .sort((a,b) => Number(a.done) - Number(b.done))
+if(sortedBy === 'alphabet')
+  sortedTodos = todos.slice()
+  .sort((a,b) => a.task.localeCompare(b.task))
+
 
 
 
 
   return (
     <div className='todos' onSubmit={(e)=>handleAddTask(e)}>
+     <select value={sortedBy} onChange={(e) => setSortedBy(e.target.value)} className='slected'>
+      <option value='input'>Sorted by input</option>
+      <option value='checked'>Sorted by checked</option>
+      <option value='alphabet'>Sorted by Alphabet</option>
+
+     </select>
+
         <form >
         <input 
         type='text'
@@ -72,7 +89,7 @@ function handleUpdate(id,newitem) {
         <button type='submit'>Add</button>
         </form>
       {
-        todos.map((item) => (
+        sortedTodos.map((item) => (
             <Todo 
             key={item.id}
             item={item}
