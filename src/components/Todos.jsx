@@ -12,6 +12,8 @@ const [todos, setTodos] = useState([
 const [newTask,setNewTask] = useState('');
 const [sortedBy , setSortedBy] = useState('input')
 
+
+//Add todo function
 function handleAddTask(e){
   e.preventDefault();
 
@@ -41,18 +43,27 @@ function handleToggle (id) {
   );
 }
 
+// delete todo Function
+
 function handleDeleleTask(id){
   setTodos((p) =>
   p.filter((todo) => todo.id !== id))
 }
 
-function handleUpdate(id,newitem) {
- 
-  todos.map((todo) =>  todo.id === id 
-  ?  {...todo,task : newitem}
+// Update task function
+
+function handleUpdate(id,newTask) {
+ setTodos((previous) => 
+previous.map(
+  todo => todo.id === id 
+  ? {...todo,task : newTask}
   : todo
 )
+)
+
 }
+
+// sort todos logic
 
 let sortedTodos;
 
